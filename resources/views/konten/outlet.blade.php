@@ -87,7 +87,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         {{-- modal tambah --}}
@@ -107,11 +106,11 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Alamat</label>
-                                <input type="text" class="form-control" name="alamat" placeholder="Nama Outlet">
+                                <input type="text" class="form-control" name="alamat" placeholder="Alamat">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">No. Telp</label>
-                                <input type="text" class="form-control" name="tlp" placeholder="Nama Outlet">
+                                <input type="text" class="form-control" name="tlp" placeholder="No. Telp">
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
@@ -145,11 +144,11 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamate" name="alamat" placeholder="Nama Outlet">
+                                <input type="text" class="form-control" id="alamate" name="alamat" placeholder="Alamat">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">No. Telp</label>
-                                <input type="text" class="form-control" id="tlpe" name="tlp" placeholder="Nama Outlet">
+                                <input type="text" class="form-control" id="tlpe" name="tlp" placeholder="No. Telp">
                             </div>
                             <div class="modal-footer">
                                 <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">

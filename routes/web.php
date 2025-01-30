@@ -34,6 +34,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/hapus-outlet', [OutletController::class, 'hapus_outlet'])->name('hapus_outlet');
     Route::post('/edit-outlet', [OutletController::class, 'edit_outlet'])->name('edit_outlet');
 
-    Route::get('/user', [UserController::class, 'index'])->name('user`');
+    Route::get('/user', [UserController::class, 'index'])->name('user');
+    Route::post('/tambah-user', [UserController::class, 'tambah_user'])->name('tambah_user');
+    Route::post('/hapus-user', [UserController::class, 'hapus_user'])->name('hapus_user');
+    Route::post('/edit-user', [UserController::class, 'edit_user'])->name('edit_user');
+
 
 });
