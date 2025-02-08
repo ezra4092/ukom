@@ -14,6 +14,7 @@ class Transaksi extends Model
         'id_outlet',
         'kode_invoice',
         'id_member',
+        'tgl',
         'batas_waktu',
         'tgl_bayar',
         'biaya_tambahan',
@@ -23,4 +24,16 @@ class Transaksi extends Model
         'dibayar',
         'id_user',
     ];
+
+    public function outlet(){
+        return $this->belongsTo(Outlet::class, 'id_outlet', 'id');
+    }
+
+    public function member(){
+        return $this->belongsTo(Member::class, 'id_member', 'id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }

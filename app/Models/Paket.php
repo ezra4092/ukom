@@ -16,4 +16,8 @@ class Paket extends Model
         'harga',
         'id_outlet',
     ];
+
+    public function outlet(){
+        return $this->belongsTo(Outlet::class, 'id_outlet', 'id');
+    }
 }

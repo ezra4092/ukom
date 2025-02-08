@@ -15,20 +15,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>{{ $title }}</title>
     <!-- CSS files -->
-    <link href="./dist/css/tabler.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/tabler-flags.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/tabler-socials.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/tabler-payments.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/tabler-vendors.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/tabler-marketing.min.css?1738102150" rel="stylesheet" />
-    <link href="./dist/css/demo.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler-flags.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler-socials.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler-payments.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler-vendors.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/tabler-marketing.min.css?1738102150" rel="stylesheet" />
+    <link href="/dist/css/demo.min.css?1738102150" rel="stylesheet" />
     <style>
         @import url('https://rsms.me/inter/inter.css');
     </style>
 </head>
 
 <body>
-    <script src="./dist/js/demo-theme.min.js?1738102150"></script>
+    <script src="/dist/js/demo-theme.min.js?1738102150"></script>
     <div class="page">
         <!-- Sidebar -->
         @include('template.sidebar')
@@ -51,7 +51,6 @@
                             <ul class="list-inline list-inline-dots mb-0">
                                 <li class="list-inline-item">
                                     Copyright &copy; 2025
-                                    <a href="." class="link-secondary">Tabler</a>.
                                     Ezra Faira UKOM.
                                 </li>
                             </ul>
@@ -62,18 +61,18 @@
         </div>
     </div>
     <!-- Libs JS -->
-    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1738102150" defer></script>
-    <script src="./dist/libs/jsvectormap/dist/jsvectormap.min.js?1738102150" defer></script>
-    <script src="./dist/libs/jsvectormap/dist/maps/world.js?1738102150" defer></script>
-    <script src="./dist/libs/jsvectormap/dist/maps/world-merc.js?1738102150" defer></script>
-    <script src="./dist/js/jquery.min.js" defer></script>
-    <script src="./dist/js/jquery.js" defer></script>
+    <script src="/dist/libs/apexcharts/dist/apexcharts.min.js?1738102150" ></script>
+    <script src="/dist/libs/jsvectormap/dist/jsvectormap.min.js?1738102150" ></script>
+    <script src="/dist/libs/jsvectormap/dist/maps/world.js?1738102150" ></script>
+    <script src="/dist/libs/jsvectormap/dist/maps/world-merc.js?1738102150" ></script>
+    <script src="/dist/js/jquery.min.js" ></script>
+    <script src="/dist/js/jquery.js" ></script>
 
 
     <!-- Tabler Core -->
-    <script src="./dist/js/tabler.min.js?1738102150" defer></script>
-    <script src="./dist/js/demo.min.js?1738102150" defer></script>
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+    <script src="/dist/js/tabler.min.js?1738102150" ></script>
+    <script src="/dist/js/demo.min.js?1738102150" ></script>
+    <script  src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
         data-cf-beacon='{"rayId":"909d707ee981fd98","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"84cae67e72b342399609db8f32d1c3ff"}'
         crossorigin="anonymous"></script>

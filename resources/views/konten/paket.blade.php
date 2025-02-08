@@ -1,11 +1,12 @@
 @extends('template.main')
+
 @section('konten')
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Table User</h3>
+                        <h3 class="card-title">Table Paket</h3>
                         <div class="p-2 g-col-6  ms-auto">
                             <a href="#" class="btn btn-primary btn-5 d-none d-sm-inline-block" data-bs-toggle="modal"
                                 data-bs-target="#tambahModal">
@@ -16,7 +17,7 @@
                                     <path d="M12 5l0 14" />
                                     <path d="M5 12l14 0" />
                                 </svg>
-                                Tambah Data User
+                                Tambah Data Paket
                             </a>
                         </div>
                     </div>
@@ -43,28 +44,39 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Nama</th>
-                                    <th>Username</th>
-                                    <th>Role</th>
                                     <th>Outlet</th>
+                                    <th>Jenis</th>
+                                    <th>Nama Paket</th>
+                                    <th>Harga</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
-                                @foreach ($data as $user)
+                                @foreach ($data as $paket)
                                     <tr>
                                         <td width="5%">{{ $no++ }}</td>
-                                        <td>{{ $user->nama }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->role }}</td>
-                                        <td>{{ $user->outlet->nama }}</td>
+                                        <td>{{ $paket->outlet->nama }}</td>
+                                        <td>
+                                            @if ($paket->jenis = 'kiloan')
+                                                Kiloan
+                                            @elseif ($paket->jenis = 'selimut')
+                                                Selimut
+                                            @elseif ($paket->jenis = 'bed_cover')
+                                                Bed Cover
+                                            @elseif ($paket->jenis = 'kaos')
+                                                Kaos
+                                            @elseif ($paket->jenis = 'lain')
+                                                Lain-lain
+                                            @endif
+                                        </td>
+                                        <td>{{ $paket->nama_paket }}</td>
+                                        <td>Rp. {{ $paket->harga }}</td>
                                         <td>
                                             <button type="button" id="edit" data-bs-toggle="modal" class="bg-warning"
-                                                data-bs-target="#editModal" data-id="{{ $user->id }}"
-                                                data-nama="{{ $user->nama }}" data-username="{{ $user->username }}"
-                                                data-password="{{ $user->password }}" data-role="{{ $user->role }}"
-                                                data-outlet="{{ $user->id_outlet }}"">
+                                                data-bs-target="#editModal" data-id="{{ $paket->id }}"
+                                                data-nama="{{ $paket->outlet->nama }}" data-jenis="{{ $paket->jenis }}"
+                                                data-nama_paket="{{ $paket->nama_paket }}" data-harga="{{ $paket->harga }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -77,7 +89,7 @@
                                                 </svg>
                                             </button>
                                             <button type="button" id="hapus" data-bs-toggle="modal" class="bg-danger"
-                                                data-bs-target="#hapusModal" data-id="{{ $user->id }}">
+                                                data-bs-target="#hapusModal" data-id="{{ $paket->id }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -140,43 +152,38 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data User</h5>
+                    <h5 class="modal-title">Tambah Data Paket</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('tambah_user') }}" method="POST">
+                    <form action="{{ route('tambah_paket') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama" placeholder="Nama">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Role</div>
-                            <select class="form-select" name="role">
-                                <option value="admin">Admin</option>
-                                <option value="kasir">Kasir</option>
-                                <option value="owner">Owner</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <div class="form-label">Outlet</div>
-                            <select class="form-select" name="id_outlet">
-                                @foreach ($outlet as $o)
-                                    <option value="{{ $o->id }}">{{ $o->nama }}</option>
-                                @endforeach
+                            <input type="input" class="form-control" placeholder="Outlet" value="{{ Auth::user()->outlet->nama }}" readonly>
+                            <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-label">Jenis</div>
+                            <select class="form-select" name="jenis">
+                                <option value="kiloan">Kiloan</option>
+                                <option value="selimut">Selimut</option>
+                                <option value="bed_cover">Bed Cover</option>
+                                <option value="kaos">Kaos</option>
+                                <option value="lain">Lain-lain</option>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Paket</label>
+                            <input type="text" class="form-control" name="nama_paket" placeholder="Nama Paket">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Harga</label>
+                            <input type="number" class="form-control" name="harga" placeholder="Harga">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
-                                Batal
+                                Cancel
                             </button>
                             <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
                                 Tambah Data
@@ -194,7 +201,7 @@
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="modal-status bg-danger"></div>
-                <form action="{{ route('hapus_user') }}" method="POST">
+                <form action="{{ route('hapus_paket') }}" method="POST">
                     @csrf
                     <input type="hidden" id="idhapus" name="id">
                     <div class="modal-body text-center mt-5 py-4">
@@ -205,7 +212,7 @@
                             <div class="row">
                                 <div class="col">
                                     <button class="btn btn-3 w-100" data-bs-dismiss="modal">
-                                        Batal
+                                        Cancel
                                     </button>
                                 </div>
                                 <div class="col">
@@ -226,51 +233,46 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data User</h5>
+                    <h5 class="modal-title">Edit Data Paket</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('edit_user') }}" method="POST">
+                    <form action="{{ route('edit_paket') }}" method="POST">
                         @csrf
                         <input type="hidden" id="ide" name="id">
                         <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="namae" name="nama"
-                                placeholder="Nama">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" id="usne" name="username"
-                                placeholder="Username">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                            <span class="text-danger" style="font-size:10px">*Kosongkan jika password tidak ingin
-                                diganti</span>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Role</div>
-                            <select class="form-select" id="rolee" name="role">
-                                <option value="admin" {{ isset($user) && $user->jenis == 'admin' ? 'selected' : '' }}>
-                                    Admin</option>
-                                <option value="kasir" {{ isset($user) && $user->jenis == 'kasir' ? 'selected' : '' }}>
-                                    Kasir</option>
-                                <option value="owner" {{ isset($user) && $user->jenis == 'owner' ? 'selected' : '' }}>
-                                    Owner</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <div class="form-label">Outlet</div>
-                            <select class="form-select" id="outlet" name="id_outlet">
-                                @foreach ($outlet as $o)
-                                    <option value="{{ $o->id }}">{{ $o->nama }}</option>
-                                @endforeach
+                            <input type="input" class="form-control" placeholder="Outlet" value="{{ Auth::user()->outlet->nama }}" readonly>
+                            <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-label">Jenis</div>
+                            <select class="form-select" id="jenise" name="jenis">
+                                <option value="kiloan" {{ isset($paket) && $paket->jenis == 'kiloan' ? 'selected' : '' }}>
+                                    Kiloan</option>
+                                <option value="selimut" {{ isset($paket) && $paket->jenis == 'selimut' ? 'selected' : '' }}>
+                                    Selimut</option>
+                                <option value="bed_cover"
+                                    {{ isset($paket) && $paket->jenis == 'bed_cover' ? 'selected' : '' }}>Bed Cover</option>
+                                <option value="kaos" {{ isset($paket) && $paket->jenis == 'kaos' ? 'selected' : '' }}>Kaos
+                                </option>
+                                <option value="lain" {{ isset($paket) && $paket->jenis == 'lain' ? 'selected' : '' }}>
+                                    Lain-lain</option>
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Paket</label>
+                            <input type="text" class="form-control" id="nama_pakete" name="nama_paket"
+                                placeholder="Nama Paket">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Harga</label>
+                            <input type="number" class="form-control" id="hargae" name="harga"
+                                placeholder="Harga">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
-                                Batal
+                                Cancel
                             </button>
                             <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
                                 Perbarui Data
@@ -283,23 +285,18 @@
     </div>
 
     <script src="/dist/js/jquery.min.js"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script> --}}
-    {{-- <script src="/dist/js/jquery.js" defer></script> --}}
-
     <script>
         $(document).on('click', '#edit', function(e) {
             var id = $(this).attr("data-id");
             var nama = $(this).attr("data-nama");
-            var username = $(this).attr("data-username");
-            // var password = $(this).attr("data-password");
-            var role = $(this).attr("data-role");
-            var outlet = $(this).attr("data-outlet");
+            var jenis = $(this).attr("data-jenis");
+            var nama_paket = $(this).attr("data-nama_paket");
+            var harga = $(this).attr("data-harga");
             $('#ide').val(id);
             $('#namae').val(nama);
-            $('#usne').val(username);
-            // $('#pwde').val(password);
-            $('#rolee').val(role);
-            $('#outlet').val(outlet);
+            $('#jenise').val(jenis);
+            $('#nama_pakete').val(nama_paket);
+            $('#hargae').val(harga);
         });
 
 

@@ -16,15 +16,15 @@ class UserSeeder extends Seeder
     {
         $user = [
             [
-                'username' => 'ezra1234',
-                'password' =>  Hash::make('12344321'),
+                'username' => 'admin',
+                'password' =>  Hash::make('admin'),
                 'nama' => 'Ezra Faira',
                 'role' => 'admin',
                 'id_outlet'=> '2'
             ],
             [
-                'username' => 'kasir1234',
-                'password' =>  Hash::make('12344321'),
+                'username' => 'kasir',
+                'password' =>  Hash::make('kasir'),
                 'nama' => 'Kasir',
                 'role' => 'kasir',
                 'id_outlet'=> '1'

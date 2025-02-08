@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetailTransaksi;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OutletController;
+use App\Http\Controllers\PaketController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/table', [DashboardController::class, 'table2'])->name('table');
 
     Route::get('/outlet', [OutletController::class, 'index'])->name('outlet');
     Route::post('/tambah-outlet', [OutletController::class, 'tambah_outlet'])->name('tambah_outlet');
@@ -39,5 +44,23 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/hapus-user', [UserController::class, 'hapus_user'])->name('hapus_user');
     Route::post('/edit-user', [UserController::class, 'edit_user'])->name('edit_user');
 
+    Route::get('/member', [MemberController::class, 'index'])->name('member');
+    Route::post('/tambah-member', [MemberController::class, 'tambah_member'])->name('tambah_member');
+    Route::post('/hapus-member', [MemberController::class, 'hapus_member'])->name('hapus_member');
+    Route::post('/edit-member', [MemberController::class, 'edit_member'])->name('edit_member');
+
+    Route::get('/paket', [PaketController::class, 'index'])->name('paket');
+    Route::post('/tambah-paket', [PaketController::class, 'tambah_paket'])->name('tambah_paket');
+    Route::post('/hapus-paket', [PaketController::class, 'hapus_paket'])->name('hapus_paket');
+    Route::post('/edit-paket', [PaketController::class, 'edit_paket'])->name('edit_paket');
+
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi');
+    Route::post('/tambah-transaksi', [TransaksiController::class, 'tambah_transaksi'])->name('tambah_transaksi');
+    Route::post('/hapus-transaksi', [TransaksiController::class, 'hapus_transaksi'])->name('hapus_transaksi');
+    Route::post('/edit-transaksi', [TransaksiController::class, 'edit_transaksi'])->name('edit_transaksi');
+
+    Route::get('/detailtransaksi', [DetailTransaksi::class, 'index'])->name('detailtransaksi');
+    Route::get('/detailtransaksi/{id}', [DetailTransaksi::class, 'index']);
+    Route::post('/tambah-detail/{id}', [DetailTransaksi::class, 'detail'])->name('detail');
 
 });

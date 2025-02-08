@@ -5,7 +5,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Table User</h3>
+                        <h3 class="card-title">Table Member</h3>
                         <div class="p-2 g-col-6  ms-auto">
                             <a href="#" class="btn btn-primary btn-5 d-none d-sm-inline-block" data-bs-toggle="modal"
                                 data-bs-target="#tambahModal">
@@ -16,7 +16,7 @@
                                     <path d="M12 5l0 14" />
                                     <path d="M5 12l14 0" />
                                 </svg>
-                                Tambah Data User
+                                Tambah Data Member
                             </a>
                         </div>
                     </div>
@@ -44,9 +44,9 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama</th>
-                                    <th>Username</th>
-                                    <th>Role</th>
-                                    <th>Outlet</th>
+                                    <th>Alamat</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>No. Telp</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -56,15 +56,20 @@
                                     <tr>
                                         <td width="5%">{{ $no++ }}</td>
                                         <td>{{ $user->nama }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->role }}</td>
-                                        <td>{{ $user->outlet->nama }}</td>
+                                        <td>{{ $user->alamat }}</td>
+                                        <td>
+                                            @if ($user->jenis_kelamin == 'P')
+                                                Perempuan
+                                            @else
+                                                Laki-laki
+                                            @endif
+                                        </td>
+                                        <td>{{ $user->tlp }}</td>
                                         <td>
                                             <button type="button" id="edit" data-bs-toggle="modal" class="bg-warning"
                                                 data-bs-target="#editModal" data-id="{{ $user->id }}"
-                                                data-nama="{{ $user->nama }}" data-username="{{ $user->username }}"
-                                                data-password="{{ $user->password }}" data-role="{{ $user->role }}"
-                                                data-outlet="{{ $user->id_outlet }}"">
+                                                data-nama="{{ $user->nama }}" data-username="{{ $user->alamat }}"
+                                                data-role="{{ $user->jenis_kelamin }}" data-outlet="{{ $user->tlp }}"">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -140,39 +145,30 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data User</h5>
+                    <h5 class="modal-title">Tambah Data Member</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('tambah_user') }}" method="POST">
+                    <form action="{{ route('tambah_member') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control" name="nama" placeholder="Nama">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Username">
+                            <label class="form-label">Alamat
+                                <textarea class="form-control" name="alamat" rows="5" placeholder="Alamat"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Role</div>
-                            <select class="form-select" name="role">
-                                <option value="admin">Admin</option>
-                                <option value="kasir">Kasir</option>
-                                <option value="owner">Owner</option>
+                            <div class="form-label">Jenis Kelamin</div>
+                            <select class="form-select" name="jenis_kelamin">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <div class="form-label">Outlet</div>
-                            <select class="form-select" name="id_outlet">
-                                @foreach ($outlet as $o)
-                                    <option value="{{ $o->id }}">{{ $o->nama }}</option>
-                                @endforeach
-                            </select>
+                            <label class="form-label">No. Telp</label>
+                            <input type="text" class="form-control" name="tlp" placeholder="No. Telp">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
@@ -194,7 +190,7 @@
             <div class="modal-content">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="modal-status bg-danger"></div>
-                <form action="{{ route('hapus_user') }}" method="POST">
+                <form action="{{ route('hapus_member') }}" method="POST">
                     @csrf
                     <input type="hidden" id="idhapus" name="id">
                     <div class="modal-body text-center mt-5 py-4">
@@ -226,47 +222,35 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Data User</h5>
+                    <h5 class="modal-title">Edit Data Member</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('edit_user') }}" method="POST">
+                    <form action="{{ route('edit_member') }}" method="POST">
                         @csrf
                         <input type="hidden" id="ide" name="id">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="namae" name="nama"
+                            <input type="text" class="form-control" id="nama" name="nama"
                                 placeholder="Nama">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-control" id="usne" name="username"
-                                placeholder="Username">
+                            <label class="form-label">Alamat
+                                <textarea class="form-control" name="alamat" id="alamat" rows="5" placeholder="Alamat"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                            <span class="text-danger" style="font-size:10px">*Kosongkan jika password tidak ingin
-                                diganti</span>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Role</div>
-                            <select class="form-select" id="rolee" name="role">
-                                <option value="admin" {{ isset($user) && $user->jenis == 'admin' ? 'selected' : '' }}>
-                                    Admin</option>
-                                <option value="kasir" {{ isset($user) && $user->jenis == 'kasir' ? 'selected' : '' }}>
-                                    Kasir</option>
-                                <option value="owner" {{ isset($user) && $user->jenis == 'owner' ? 'selected' : '' }}>
-                                    Owner</option>
+                            <div class="form-label">Jenis Kelamin</div>
+                            <select class="form-select" id="jk" name="jenis_kelamin">
+                                <option value="L" {{ isset($user) && $user->jenis == 'L' ? 'selected' : '' }}>
+                                    Laki-laki</option>
+                                <option value="P" {{ isset($user) && $user->jenis == 'P' ? 'selected' : '' }}>
+                                    Perempuan</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <div class="form-label">Outlet</div>
-                            <select class="form-select" id="outlet" name="id_outlet">
-                                @foreach ($outlet as $o)
-                                    <option value="{{ $o->id }}">{{ $o->nama }}</option>
-                                @endforeach
-                            </select>
+                            <label class="form-label">No. Telp</label>
+                            <input type="text" class="form-control" id="tlp" name="tlp"
+                                placeholder="No. Telp">
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
@@ -274,6 +258,50 @@
                             </button>
                             <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
                                 Perbarui Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal transaksi --}}
+    <div class="modal modal-blur fade" id="tambahModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('tambah_member') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" class="form-control" name="nama" placeholder="Nama">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alamat
+                                <textarea class="form-control" name="alamat" rows="5" placeholder="Alamat"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-label">Jenis Kelamin</div>
+                            <select class="form-select" name="jenis_kelamin">
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">No. Telp</label>
+                            <input type="text" class="form-control" name="tlp" placeholder="No. Telp">
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
+                                Batal
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
+                                Tambah Data
                             </button>
                         </div>
                     </form>
@@ -291,15 +319,13 @@
             var id = $(this).attr("data-id");
             var nama = $(this).attr("data-nama");
             var username = $(this).attr("data-username");
-            // var password = $(this).attr("data-password");
             var role = $(this).attr("data-role");
             var outlet = $(this).attr("data-outlet");
             $('#ide').val(id);
-            $('#namae').val(nama);
-            $('#usne').val(username);
-            // $('#pwde').val(password);
-            $('#rolee').val(role);
-            $('#outlet').val(outlet);
+            $('#nama').val(nama);
+            $('#alamat').val(username);
+            $('#jk').val(role);
+            $('#tlp').val(outlet);
         });
 
 

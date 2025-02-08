@@ -18,10 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('id_member');
             $table->dateTime('tgl');
             $table->dateTime('batas_waktu');
-            $table->dateTime('tgl_bayar');
+            $table->dateTime('tgl_bayar')->nullable();
             $table->integer('biaya_tambahan')->nullable();
             $table->double('diskon')->nullable();
-            $table->integer('pajak');
+            $table->integer('pajak')->nullable();
             $table->enum('status', ['baru', 'proses', 'selesai', 'diambil']);
             $table->enum('dibayar', ['dibayar', 'belum_dibayar']);
             $table->unsignedBigInteger('id_user');

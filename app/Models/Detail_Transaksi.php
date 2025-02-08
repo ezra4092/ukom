@@ -16,4 +16,9 @@ class Detail_Transaksi extends Model
         'qty',
         'keterangan',
     ];
+
+    public function paket(){
+        return $this->belongsTo(Paket::class, 'id_paket', 'id');
+    }
+    
 }
