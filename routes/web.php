@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/table', [DashboardController::class, 'table2'])->name('table');
+    Route::get('/table', [DashboardController::class, 'table'])->name('table');
 
     Route::get('/outlet', [OutletController::class, 'index'])->name('outlet');
     Route::post('/tambah-outlet', [OutletController::class, 'tambah_outlet'])->name('tambah_outlet');
@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/tambah-transaksi', [TransaksiController::class, 'tambah_transaksi'])->name('tambah_transaksi');
     Route::post('/hapus-transaksi', [TransaksiController::class, 'hapus_transaksi'])->name('hapus_transaksi');
     Route::post('/edit-transaksi', [TransaksiController::class, 'edit_transaksi'])->name('edit_transaksi');
+    Route::get('/import-transaksi', [TransaksiController::class, 'import'])->name('import_transaksi');
 
     Route::get('/detailtransaksi', [DetailTransaksi::class, 'index'])->name('detailtransaksi');
     Route::get('/detailtransaksi/{id}', [DetailTransaksi::class, 'index']);

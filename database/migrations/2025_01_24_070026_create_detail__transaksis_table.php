@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_transaksi');
             $table->unsignedBigInteger('id_paket');
             $table->double('qty');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
         });
     }
 

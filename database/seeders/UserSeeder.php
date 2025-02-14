@@ -28,6 +28,13 @@ class UserSeeder extends Seeder
                 'nama' => 'Kasir',
                 'role' => 'kasir',
                 'id_outlet'=> '1'
+            ],
+            [
+                'username' => 'owner',
+                'password' =>  Hash::make('owner'),
+                'nama' => 'Owner',
+                'role' => 'owner',
+                'id_outlet'=> '1'
             ]
             ];
 

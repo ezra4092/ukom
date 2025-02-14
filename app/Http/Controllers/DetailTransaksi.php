@@ -40,14 +40,11 @@ class DetailTransaksi extends Controller
 
     public function index($id) {
         // dd($id);
-        $detail = Transaksi::with(['user', 'outlet', 'member'])->find($id);
+        // $detail = Transaksi::with(['user', 'outlet', 'member'])->find($id);
+        $detail = Transaksi::find($id);
         $idtransaksi = $detail->id;
         $detailTransaksi = Detail_Transaksi::where('tb_detail_transaksi.id_transaksi', $id)->get();
-
-
         $total = 0;
-
-
         foreach ($detailTransaksi as $i) {
             $total += $i->paket->harga * $i->qty;
         }
@@ -55,15 +52,16 @@ class DetailTransaksi extends Controller
         $data = [
             'data' => Detail_Transaksi::where('id_transaksi', $idtransaksi)->get(),
             'title' => 'Detail Transaksi - UKOM',
-            'nama' => $detail->user->nama ?? null,
-            'outlet' => $detail->outlet->nama ?? null,
-            'namacust' => $detail->member->nama ?? null,
-            'tlp' => $detail->member->tlp ?? null,
-            'alamat' => $detail->member->alamat ?? null,
-            'kode' => $detail->kode_invoice,
+            'nama' => $detail,
+            'outlet' => $detail,
+            'namacust' => $detail,
+            'tlp' => $detail,
+            'alamat' => $detail,
+            'kode' => $detail,
             'paket' => Paket::all(),
             'idtransaksi' => $idtransaksi,
             'total' => $total,
+            'pajak' => $total * 0.1
         ];
 
         return view('konten.invoice', $data);
@@ -79,6 +77,6 @@ class DetailTransaksi extends Controller
         $invoice->keterangan = $request->keterangan;
         $invoice->save();
 
-        return view('konten.invoice',  ['id' => $id]);
+        return redirect()->back();
     }
 }

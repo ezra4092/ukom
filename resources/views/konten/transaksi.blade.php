@@ -7,35 +7,32 @@
                     <div class="card-header">
                         <h3 class="card-title">Table Transaksi</h3>
                         <div class="p-2 g-col-6  ms-auto">
-                            <a href="#" class="btn btn-primary btn-5 d-none d-sm-inline-block" data-bs-toggle="modal"
-                                data-bs-target="#tambahModal">
-                                <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="icon icon-2">
-                                    <path d="M12 5l0 14" />
-                                    <path d="M5 12l14 0" />
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                <a href="#" class="btn bg-primary-lt me-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                    Tambah Data
+                                </a>
+                            @endif
+                            <a href="" class="btn bg-success-lt">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-file-spreadsheet">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                    <path d="M8 11h8v7h-8z" />
+                                    <path d="M8 15h8" />
+                                    <path d="M11 11v7" />
                                 </svg>
-                                Tambah Data Transaksi
+                                Generate Laporan
                             </a>
-                        </div>
-                    </div>
-                    <div class="card-body border-bottom py-3">
-                        <div class="d-flex">
-                            <div class="text-secondary">
-                                Show
-                                <div class="mx-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" value="8" size="3"
-                                        aria-label="Invoices count">
-                                </div>
-                                entries
-                            </div>
-                            <div class="ms-auto text-secondary">
-                                Search:
-                                <div class="ms-2 d-inline-block">
-                                    <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -45,52 +42,57 @@
                                     <th>No.</th>
                                     <th>Outlet</th>
                                     <th>Kode Invoice</th>
-                                    <th>Nama Member</th>
+                                    <th>Nama</th>
                                     <th>Tanggal</th>
                                     <th>Batas Waktu</th>
                                     <th>Tanggal Bayar</th>
-                                    <th>Biaya Tambahan</th>
+                                    <th>Total</th>
+                                    {{-- <th>Biaya Tambahan</th>
                                     <th>Diskon</th>
-                                    <th>Pajak</th>
+                                    <th>Pajak</th> --}}
                                     <th>Status</th>
                                     <th>Pembayaran</th>
                                     <th>Nama Petugas</th>
-                                    <th>Aksi</th>
+                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                        <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach ($data as $transaksi)
                                     <tr>
-                                        <td width="5%">{{ $no++ }}</td>
+                                        <td width="1%" class="text-end">{{ $no++ }}</td>
                                         <td>{{ $transaksi->outlet->nama }}</td>
                                         <td>{{ $transaksi->kode_invoice }}</td>
                                         <td>{{ $transaksi->member->nama }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tgl)->format('d-m-Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->batas_waktu)->format('d-m-Y') }}</td>
-                                        <td>{{ $transaksi->tgl_bayar }}</td>
-                                        <td>{{ $transaksi->biaya_tambahan }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($transaksi->tgl_bayar)->format('d-m-Y') }}</td>
+                                        <td>{{ $transaksi->total}}</td>
+                                        {{-- <td>{{ $transaksi->biaya_tambahan }}</td>
                                         <td>{{ $transaksi->diskon }}</td>
-                                        <td>{{ $transaksi->pajak }}</td>
+                                        <td>{{ $transaksi->pajak }}</td> --}}
                                         <td>
                                             @if ($transaksi->status == 'baru')
-                                                Baru
+                                            <span class="badge bg-primary me-1"></span> Baru
                                             @elseif ($transaksi->status == 'proses')
-                                                Proses
+                                            <span class="badge bg-warning me-1"></span>Proses
                                             @elseif ($transaksi->status == 'selesai')
-                                                Selesai
+                                            <span class="badge bg-success me-1"></span>Selesai
                                             @elseif ($transaksi->status == 'diambil')
-                                                Diambil
+                                            <span class="badge bg-secondary me-1"></span>Diambil
                                             @endif
                                         </td>
                                         <td>
                                             @if ($transaksi->dibayar == 'dibayar')
-                                                Dibayar
+                                            <div class="badge bg-success-lt" style="border-radius:15px">Dibayar</div>
                                             @elseif ($transaksi->dibayar == 'belum_dibayar')
-                                                Belum Dibayar
+                                            <div class="badge bg-danger-lt" style="border-radius:15px">Belum Dibayar</div>
                                             @endif
                                         </td>
                                         <td>{{ $transaksi->user->nama }}</td>
+                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
                                         <td>
                                             <button type="button" class="bg-success"
                                                 onclick="window.location.href='/detailtransaksi/{{ $transaksi->id }}'">
@@ -141,44 +143,13 @@
                                                 </svg>
                                             </button>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer d-flex align-items-center">
-                        <p class="m-0 text-secondary">Showing <span>1</span> to <span>8</span> of <span>16</span> entries
-                        </p>
-                        <ul class="pagination m-0 ms-auto">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M15 6l-6 6l6 6" />
-                                    </svg>
-                                    prev
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">
-                                    next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M9 6l6 6l-6 6" />
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
+                     <div class="card-footer d-flex align-items-center">
                     </div>
                 </div>
             </div>
@@ -226,10 +197,6 @@
                         <div class="mb-3">
                             <label class="form-label">Diskon</label>
                             <input type="number" class="form-control" name="diskon" placeholder="Diskon">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Pajak</label>
-                            <input type="number" class="form-control" name="pajak" placeholder="Pajak">
                         </div>
                         <div class="mb-3">
                             <div class="form-label">Status</div>
@@ -310,7 +277,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Data Transaksi</h5>
+                    <h5 class="modal-title">Edit Data Transaksi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -321,19 +288,24 @@
                             <div class="form-label">Outlet</div>
                             <input type="input" class="form-control" placeholder="Outlet"
                                 value="{{ Auth::user()->outlet->nama }}" readonly>
-                            <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}">
+                            <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}" disabled>
                         </div>
                         <div class="mb-3">
                             <div class="form-label">Member</div>
-                            <select class="form-select" name="id_member" id="membere" required>
+                            <select class="form-select" name="id_member" id="membere">
                                 @foreach ($member as $m)
-                                    <option value="{{ $m->id }}">{{ $m->nama }}</option>
+                                    <option value="{{ $m->id }}" disabled>{{ $m->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
                             <input type="date" class="form-control" name="tgl" id="tgle"
+                                placeholder="Tanggal" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Batas Waktu</label>
+                            <input type="date" class="form-control" name="batas_waktu" id="batas_waktue"
                                 placeholder="Tanggal" required>
                         </div>
                         <div class="mb-3">
@@ -352,13 +324,8 @@
                                 placeholder="Diskon">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Pajak</label>
-                            <input type="number" class="form-control" name="pajak" id="pajake"
-                                placeholder="Pajak">
-                        </div>
-                        <div class="mb-3">
                             <div class="form-label">Status</div>
-                            <select class="form-select" name="statuse" required>
+                            <select class="form-select" name="status" required>
                                 <option value="baru"
                                     {{ isset($transaksi) && $transaksi->status == 'baru' ? 'selected' : '' }}>Baru</option>
                                 <option value="proses"
@@ -374,7 +341,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-label">Pembayaran</div>
-                            <select class="form-select" name="dibayare" required>
+                            <select class="form-select" name="dibayar" required>
                                 <option value="dibayar"
                                     {{ isset($transaksi) && $transaksi->dibayar == 'dibayar' ? 'selected' : '' }}>Dibayar
                                 </option>
@@ -387,14 +354,14 @@
                             <div class="form-label">Petugas</div>
                             <input type="input" class="form-control" placeholder="Outlet"
                                 value="{{ Auth::user()->nama }}" readonly>
-                            <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
+                            <input type="hidden" name="id_user" value="{{ Auth::user()->id }}" disabled>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-secondary btn-3" data-bs-dismiss="modal">
                                 Cancel
                             </button>
                             <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
-                                Tambah Data
+                                Perbarui Data
                             </button>
                         </div>
                     </form>

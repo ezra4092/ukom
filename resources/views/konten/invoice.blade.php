@@ -12,18 +12,29 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
-                        <button type="button" class="btn btn-primary" onclick="printSection()">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
-                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
-                                <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
-                                <path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+                        <a href="" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                            <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-2">
+                                <path d="M12 5l0 14" />
+                                <path d="M5 12l14 0" />
                             </svg>
-                            Print Invoice
-                        </button>
+                            Tambah Data
+                        </a>
+                        {{-- <a href="" class="btn btn-primary ms-auto" data-bs-toggle="modal"
+                            data-bs-target="#tambahModal">
+                            <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cash">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" />
+                                <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2" />
+                            </svg>
+                            Bayar
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -37,40 +48,30 @@
                             <div class="col-6">
                                 <p class="h3">BersihSekejab</p>
                                 <address>
-                                    Nama Petugas : {{ $nama }}<br>
-                                    Nama Outlet : {{ $outlet }}<br>
+                                    Nama Petugas : {{ $nama->user->nama }}<br>
+                                    Nama Outlet : {{ $outlet->outlet->nama }}<br>
                                 </address>
                             </div>
                             <div class="col-6 text-end">
-                                <p class="h3">{{ $namacust }}</p>
+                                <p class="h3">{{ $namacust->member->nama }}</p>
                                 <address>
-                                    {{ $tlp }}<br>
-                                    {{ $alamat }}<br>
+                                    {{ $tlp->member->tlp }}<br>
+                                    {{ $alamat->member->alamat }}<br>
                                 </address>
                             </div>
                             <div class="col-12 my-5 d-flex justify-align-reverse">
-                                <h1>Kode : {{ $kode }}</h1>
-                                <a href="" class="btn btn-primary btn-5 d-none d-sm-inline-block ms-auto"
-                                    data-bs-toggle="modal" data-bs-target="#tambahModal">
-                                    <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
-                                        <path d="M12 5l0 14" />
-                                        <path d="M5 12l14 0" />
-                                    </svg>
-                                    Tambah Data Transaksi
-                                </a>
+                                <h1>Kode : {{ $kode->kode_invoice }}</h1>
+
                             </div>
                         </div>
                         <table class="table table-transparent table-responsive">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="width: 1%"></th>
+                                    <th class="text-center" style="width: 1%">No</th>
                                     <th>Paket</th>
-                                    <th class="text-center" style="width: 1%">Qnt</th>
-                                    <th class="text-end" style="width: 1%">Harga</th>
-                                    <th class="text-end" style="width: 1%">Total</th>
+                                    <th class="text-center" style="width: 5%">Qnt</th>
+                                    <th class="text-end" style="width: 20%">Harga</th>
+                                    <th class="text-end" style="width: 20%">Total</th>
                                 </tr>
                             </thead>
                             @php $no = 1; @endphp
@@ -83,8 +84,8 @@
                                     <td class="text-center">
                                         {{ $invoice->qty }}
                                     </td>
-                                    <td class="text-end"> {{ $invoice->paket->harga }}</td>
-                                    <td class="text-end">{{ $invoice->qty * $invoice->paket->harga }}</td>
+                                    <td class="text-end">Rp. {{ $invoice->paket->harga }}</td>
+                                    <td class="text-end">Rp. {{ $invoice->qty * $invoice->paket->harga }}</td>
                                 </tr>
                             @endforeach
                             {{-- <tr>
@@ -96,26 +97,38 @@
                                 <td class="text-end">$5.000,00</td>
                             </tr> --}}
                             <tr>
+                                <td colspan="4" class="font-weight-bold text-uppercase text-end">Pajak (10%)</td>
+                                <td class="font-weight-bold text-end">Rp. {{ $pajak}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="font-weight-bold text-uppercase text-end">Diskon</td>
+                                <td class="font-weight-bold text-end">Rp. </td>
+                            </tr>
+                            <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                                <td class="font-weight-bold text-end">{{ $total }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ $total + $pajak}}</td>
                             </tr>
                         </table>
-                        <table class="table table-transparent table-responsive mt-5">
-                        <tr>
-                            <td class="text-center">Total</td>
-                            <td class="text-center">Dibayar</td>
-                            <td class="text-center">Kembalian</td>
-                        </tr>
-
-                        </table>
-                        <p class="text-secondary text-center mt-5">Thank you very much for trusting our laundry service. We look forward to serving you again!</p>
+                        <p class="text-secondary text-center mt-5">Thank you very much for trusting our laundry service. We
+                            look forward to serving you again!</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container-xl">
+        <div class="container-xl d-flex justify-content-between">
             <a href="/transaksi" class="btn btn-primary">Kembali ke halaman transaksi</a>
+            <button type="button" class="btn btn-primary" onclick="printSection()">
+                <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
+                    stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+                    <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+                    <path d="M7 13m0 2a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2z" />
+                </svg>
+                Print Invoice
+            </button>
         </div>
 
         {{-- modal tambah --}}
@@ -183,12 +196,12 @@
             });
 
             function printSection() {
-    var printContents = document.querySelector('.page-body').outerHTML;
-    var originalContents = document.body.innerHTML;
+                var printContents = document.querySelector('.page-body').outerHTML;
+                var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-}
+                document.body.innerHTML = printContents;
+                window.print();
+                document.body.innerHTML = originalContents;
+            }
         </script>
     @endsection

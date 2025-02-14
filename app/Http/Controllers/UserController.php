@@ -18,7 +18,7 @@ class UserController extends Controller
     }
 
     public function tambah_user(Request $request){
-        $request->validate(['password' => 'required|min:8',]);
+        $request->validate(['password' => 'required|min:4',]);
         $user = New User();
         $user->nama = $request->nama;
         $user->username = $request->username;

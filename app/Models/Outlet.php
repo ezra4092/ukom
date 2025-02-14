@@ -15,5 +15,5 @@ class Outlet extends Model
         'alamat',
         'tlp',
     ];
-
+    
 }

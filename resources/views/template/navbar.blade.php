@@ -1,10 +1,5 @@
 <header class="navbar navbar-expand-md d-none d-lg-flex d-print-none">
     <div class="container-xl">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="navbar-nav ms-auto me-3">
             <div class="d-none d-md-flex">
                 <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode"
@@ -33,7 +28,7 @@
                 <a href="#" class="nav-link lh-1 text-reset p-0" data-bs-toggle="dropdown"
                     aria-label="Open user menu">
                     <span class="avatar avatar-sm"
-                        style="background-image: url(/static/avatars/000m.jpg)"></span>
+                        style="background-image: url(/static/avatars/user2.png)"></span>
                     <div class="d-none d-xl-block ps-2">
                         <div>{{Auth::user()->nama}}</div>
                         <div class="mt-1 small text-secondary">{{Auth::user()->role}}</div>
@@ -41,7 +36,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                     <a href="./settings.html" class="dropdown-item">Profile</a>
-                    <a href="logout" class="dropdown-item">Logout</a>
+                    <a href="/logout" class="dropdown-item">Logout</a>
                 </div>
             </div>
         </div>

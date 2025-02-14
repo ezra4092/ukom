@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('pajak')->nullable();
             $table->enum('status', ['baru', 'proses', 'selesai', 'diambil']);
             $table->enum('dibayar', ['dibayar', 'belum_dibayar']);
+            $table->integer('total')->nullable();
             $table->unsignedBigInteger('id_user');
 
         });

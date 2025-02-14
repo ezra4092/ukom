@@ -22,6 +22,7 @@ class Transaksi extends Model
         'pajak',
         'status',
         'dibayar',
+        'total',
         'id_user',
     ];
 

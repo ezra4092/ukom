@@ -68,7 +68,7 @@
     <script src="/dist/js/jquery.min.js" ></script>
     <script src="/dist/js/jquery.js" ></script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js" integrity="sha512-L0Shl7nXXzIlBSUUPpxrokqq4ojqgZFQczTYlGjzONGTDAcLremjwaWv5A+EDLnxhQzY5xUZPWLOLqYRkY0Cbw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Tabler Core -->
     <script src="/dist/js/tabler.min.js?1738102150" ></script>
     <script src="/dist/js/demo.min.js?1738102150" ></script>

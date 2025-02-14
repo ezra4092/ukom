@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
     public function index(){
+        $outletId = Auth::user()->id_outlet;
+        $members = Member::whereHas('transaksi', function ($query) use ($outletId) {
+            $query->where('id_outlet', $outletId);
+        })->get();
         return view('konten.member', [
-            'data' => Member::all(),
-            'title' => 'Member - UKOM'
+            'data' => $members,
+            'title' => 'Member - UKOM',
         ]);
     }
 
