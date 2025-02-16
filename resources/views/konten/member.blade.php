@@ -2,13 +2,20 @@
 @section('konten')
     <div class="page-header d-print-none">
         <div class="container-xl">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Table Member</h3>
+                        <h3 class="card-title">Table Pelanggan</h3>
                         <div class="p-2 g-col-6  ms-auto">
                             @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
-                                <a href="#" class="btn bg-primary-lt me-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                                <a href="#" class="btn bg-primary-lt me-2" data-bs-toggle="modal"
+                                    data-bs-target="#tambahModal">
                                     <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -19,7 +26,7 @@
                                     Tambah Data
                                 </a>
                             @endif
-                            <a href="" class="btn bg-success-lt">
+                            {{-- <a href="" class="btn bg-success-lt">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
@@ -32,7 +39,7 @@
                                     <path d="M11 11v7" />
                                 </svg>
                                 Generate Laporan
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -86,7 +93,7 @@
                                                 </button>
                                                 <button type="button" id="hapus" data-bs-toggle="modal"
                                                     class="bg-danger" data-bs-target="#hapusModal"
-                                                    data-id="{{ $user->id }}">
+                                                    data-id="{{ $user->id }}" data-nama="{{ $user->nama }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -167,7 +174,8 @@
                     @csrf
                     <input type="hidden" id="idhapus" name="id">
                     <div class="modal-body text-center mt-5 py-4">
-                        <h3>Apakah anda yakin ingin menghapus data?</h3>
+                        <h3>Apakah anda yakin menghapus data pelanggan <span id="namaa" class="text-danger"></span>?
+                            Tindakan ini akan menghapus permanen semua data terkait transaksi tanpa bisa dikembalikan.</h3>
                     </div>
                     <div class="modal-footer">
                         <div class="w-100">
@@ -239,49 +247,6 @@
         </div>
     </div>
 
-    {{-- modal transaksi --}}
-    <div class="modal modal-blur fade" id="tambahModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Transaksi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('tambah_member') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Nama</label>
-                            <input type="text" class="form-control" name="nama" placeholder="Nama">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Alamat
-                                <textarea class="form-control" name="alamat" rows="5" placeholder="Alamat"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Jenis Kelamin</div>
-                            <select class="form-select" name="jenis_kelamin">
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">No. Telp</label>
-                            <input type="text" class="form-control" name="tlp" placeholder="No. Telp">
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
-                                Batal
-                            </button>
-                            <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
-                                Tambah Data
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="/dist/js/jquery.min.js"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script> --}}
@@ -304,7 +269,20 @@
 
         $(document).on('click', '#hapus', function(e) {
             var id = $(this).attr("data-id");
+            var nama = $(this).attr("data-nama");
             $('#idhapus').val(id)
+            $('#namaa').text(nama);
+            $('#nama2').text(nama);
         });
+    </script>
+
+    <script>
+        setTimeout(function() {
+            let alert = document.querySelector('.alert');
+            if (alert) {
+                alert.classList.add('fade');
+                setTimeout(() => alert.remove(), 500); // Hapus elemen setelah efek fade
+            }
+        }, 2000); // 3 detik
     </script>
 @endsection

@@ -9,6 +9,7 @@ use App\Models\Paket;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DetailTransaksi extends Controller
 {
@@ -38,7 +39,8 @@ class DetailTransaksi extends Controller
     //     return view('konten.invoice', $data);
     // }
 
-    public function index($id) {
+    public function index($id)
+    {
         // dd($id);
         // $detail = Transaksi::with(['user', 'outlet', 'member'])->find($id);
         $detail = Transaksi::find($id);
@@ -48,6 +50,15 @@ class DetailTransaksi extends Controller
         foreach ($detailTransaksi as $i) {
             $total += $i->paket->harga * $i->qty;
         }
+        $pajak = $total * 0.02;
+        $tambahan = $detail->biaya_tambahan;
+        $diskon = $detail->diskon / 100;
+        $diskon2 = $diskon * $total;
+        $totaldue = $total + $pajak + $tambahan - $diskon2;
+        $detail->total = $totaldue;
+        $detail->pajak = $pajak;
+        $detail->save();
+
 
         $data = [
             'data' => Detail_Transaksi::where('id_transaksi', $idtransaksi)->get(),
@@ -60,22 +71,27 @@ class DetailTransaksi extends Controller
             'kode' => $detail,
             'paket' => Paket::all(),
             'idtransaksi' => $idtransaksi,
-            'total' => $total,
-            'pajak' => $total * 0.1
+            'total' => $totaldue,
+            'pajak' => $pajak,
+            'diskon' => $diskon2,
+            'biaya_tambahan' => $tambahan
+
         ];
 
         return view('konten.invoice', $data);
     }
 
-    public function detail(Request $request, $id) {
+    public function detail(Request $request, $id)
+    {
         // dd($id);
-        $id = Transaksi::where('id', $id)->value('id');
-        $invoice = new Detail_Transaksi();
-        $invoice->id_transaksi = $id;
-        $invoice->id_paket = $request->id_paket;
-        $invoice->qty = $request->qty;
-        $invoice->keterangan = $request->keterangan;
-        $invoice->save();
+        foreach ($request->id_paket as $index => $id_paket) {
+            DB::table('tb_detail_transaksi')->insert([
+                'id_transaksi' => $id,
+                'id_paket' => $id_paket,
+                'qty' => $request->qty[$index] // Ambil qty sesuai indeks paket
+            ]);
+        }
+
 
         return redirect()->back();
     }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail_Transaksi;
+use App\Models\Member;
 use App\Models\Outlet;
+use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,9 +35,21 @@ class UserController extends Controller
 
     public function hapus_user(Request $request){
         // dd($request->all());
-        $outlet = $request->id;
-        $hapus = User::where('id', $outlet)->first();
-        $hapus->delete();
+        // $outlet = $request->id;
+        // $hapus = User::where('id', $outlet)->first();
+        // $hapus->delete();
+
+        $id = $request->id;
+        $detailIds = Transaksi::where('id_user', $id)->pluck('id')->toArray();
+        if (($detailIds)) {
+            Detail_Transaksi::whereIn('id_transaksi', $detailIds)->delete();
+        }
+        Transaksi::whereIn('id_user', $id)->delete();
+
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+        }
 
         return redirect()->route('user');
     }

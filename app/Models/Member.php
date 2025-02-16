@@ -15,6 +15,7 @@ class Member extends Model
         'alamat',
         'jenis_kelamin',
         'tlp',
+        'id_outlet'
     ];
 
     public function transaksi()

@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail_Transaksi;
 use App\Models\Member;
 use App\Models\Outlet;
 use App\Models\Paket;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class PaketController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $user = auth()->user();
         return view('konten.paket', [
             'data' => Paket::all(),
@@ -18,7 +21,8 @@ class PaketController extends Controller
         ]);
     }
 
-    public function tambah_paket(Request $request){
+    public function tambah_paket(Request $request)
+    {
         // dd($request->all());
         $paket = new Paket();
         $paket->jenis = $request->jenis;
@@ -27,18 +31,27 @@ class PaketController extends Controller
         $paket->id_outlet = $request->id_outlet;
         $paket->save();
 
-        return redirect()->route('paket');
+        return redirect()->route('paket')->with('success', 'Data paket berhasil ditambahkan.');
+
     }
 
-    public function hapus_paket(Request $request){
-        $paket = $request->id;
-        $hapus = Paket::find($paket);
-        $hapus->delete();
+    public function hapus_paket(Request $request)
+    {
 
-        return redirect()->route('paket');
+        $id = $request->id;
+        Detail_Transaksi::where('id_paket', $id)->delete();
+
+        $paket = Paket::find($id);
+        if ($paket) {
+            $paket->delete();
+        }
+
+        return redirect()->route('paket')->with('success', 'Paket dan transaksi terkait berhasil dihapus.');
+
     }
 
-    public function edit_paket(Request $request){
+    public function edit_paket(Request $request)
+    {
         //dd($request->all());
         $edit = $request->id;
         $paket = Paket::find($edit);
@@ -47,7 +60,7 @@ class PaketController extends Controller
         $paket->harga = $request->harga;
         $paket->id_outlet = $request->id_outlet;
         $paket->save();
+        return redirect()->route('paket')->with('success', 'Data paket berhasil ditambahkan.');
 
-        return redirect()->route('paket');
     }
 }

@@ -44,7 +44,7 @@
                             </svg>
                         </span>
                         <span class="nav-link-title">
-                            Member
+                            Pelanggan
                         </span>
                     </a>
                 </li>

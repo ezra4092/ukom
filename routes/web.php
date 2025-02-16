@@ -21,14 +21,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('guest')->group(function(){
+Route::get('testexportlalala', function () {
+    return view('exports.transaksi');
+});
+
+Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'index'])->name('login');
 
     Route::post('/proses', [AuthController::class, 'login'])->name('proses');
 });
 
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -58,10 +62,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/tambah-transaksi', [TransaksiController::class, 'tambah_transaksi'])->name('tambah_transaksi');
     Route::post('/hapus-transaksi', [TransaksiController::class, 'hapus_transaksi'])->name('hapus_transaksi');
     Route::post('/edit-transaksi', [TransaksiController::class, 'edit_transaksi'])->name('edit_transaksi');
-    Route::get('/import-transaksi', [TransaksiController::class, 'import'])->name('import_transaksi');
+    Route::get('/export-transaksi', [TransaksiController::class, 'export'])->name('export_transaksi');
 
     Route::get('/detailtransaksi', [DetailTransaksi::class, 'index'])->name('detailtransaksi');
     Route::get('/detailtransaksi/{id}', [DetailTransaksi::class, 'index']);
     Route::post('/tambah-detail/{id}', [DetailTransaksi::class, 'detail'])->name('detail');
-
 });

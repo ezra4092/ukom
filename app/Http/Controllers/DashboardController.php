@@ -8,6 +8,7 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class DashboardController extends Controller
 {
@@ -47,9 +48,10 @@ class DashboardController extends Controller
         // Data statistik dashboard
         $outletId = Auth::user()->id_outlet;
         $outletCount = Outlet::count();
-        $transaksiCount = Transaksi::count();
-        $memberCount = Member::count();
+        $transaksiCount = Transaksi::where('id_outlet', $outletId)->count();
+        $memberCount = Member::where('id_outlet', $outletId)->count();
         $paymentCount = Transaksi::where('dibayar', 'dibayar')->count();
+        $totaltransaksi = Transaksi::where('id_outlet', $outletId)->sum('total');
         $lastTransactions = Transaksi::where('id_outlet', $outletId)
             ->orderBy('tgl', 'DESC')
             ->take(5)
@@ -57,12 +59,43 @@ class DashboardController extends Controller
 
         $chartData = DB::table('tb_transaksi')
             ->join('tb_outlet', 'tb_transaksi.id_outlet', '=', 'tb_outlet.id')
-            ->select('tb_outlet.nama as nama_outlet', DB::raw('COUNT(tb_transaksi.id) as total_transaksi'))
-            ->groupBy('tb_outlet.nama')
+            ->select(
+                'tb_outlet.nama as nama_outlet',
+                DB::raw("DATE_FORMAT(tb_transaksi.tgl, '%Y-%m') as bulan"), // Mengambil tahun-bulan dari kolom tgl
+                DB::raw('COUNT(tb_transaksi.id) as total_transaksi')
+            )
+            ->groupBy('tb_outlet.nama', DB::raw("DATE_FORMAT(tb_transaksi.tgl, '%Y-%m')")) // Group by outlet dan bulan
+            ->orderBy(DB::raw("DATE_FORMAT(tb_transaksi.tgl, '%Y-%m')"), 'asc') // Urutkan berdasarkan bulan
             ->get();
 
-        $labels = $chartData->pluck('nama_outlet')->toArray(); // Nama outlet sebagai label
-        $values = $chartData->pluck('total_transaksi')->toArray(); // Jumlah transaksi sebagai data
+        // Inisialisasi variabel untuk menyimpan data
+        $labels = [];
+        $data = [];
+
+        // Loop melalui hasil query untuk memproses data
+        foreach ($chartData as $row) {
+            // Tambahkan bulan ke labels jika belum ada
+            if (!in_array($row->bulan, $labels)) {
+                $labels[] = $row->bulan;
+            }
+
+            // Tambahkan data transaksi per outlet
+            if (!isset($data[$row->nama_outlet])) {
+                $data[$row->nama_outlet] = [];
+            }
+            $data[$row->nama_outlet][$row->bulan] = $row->total_transaksi;
+        }
+
+        // Pastikan semua outlet memiliki data untuk setiap bulan
+        foreach ($data as $outlet => $transactions) {
+            foreach ($labels as $bulan) {
+                if (!isset($transactions[$bulan])) {
+                    $data[$outlet][$bulan] = 0; // Isi dengan 0 jika tidak ada transaksi
+                }
+            }
+            // Urutkan data berdasarkan bulan
+            ksort($data[$outlet]);
+        }
 
         // Kirim semua data ke view
         return view('dashboard', [
@@ -73,7 +106,8 @@ class DashboardController extends Controller
             'payment' => $paymentCount,
             'last' => $lastTransactions,
             'labels' => $labels,
-            'values' => $values,
+            'data' => $data,
+            'totalpenjualan' => $totaltransaksi
         ]);
     }
 

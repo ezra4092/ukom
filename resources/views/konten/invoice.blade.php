@@ -12,7 +12,7 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
-                        <a href="" class="btn btn-primary ms-auto" data-bs-toggle="modal" data-bs-target="#tambahModal">
+                        <a href="" class="btn bg-primary-lt me-2" data-bs-toggle="modal" data-bs-target="#tambahModal">
                             <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -48,8 +48,8 @@
                             <div class="col-6">
                                 <p class="h3">BersihSekejab</p>
                                 <address>
-                                    Nama Petugas : {{ $nama->user->nama }}<br>
-                                    Nama Outlet : {{ $outlet->outlet->nama }}<br>
+                                    Petugas : {{ $nama->user->nama }}<br>
+                                    Outlet : {{ $outlet->outlet->nama }}<br>
                                 </address>
                             </div>
                             <div class="col-6 text-end">
@@ -97,16 +97,20 @@
                                 <td class="text-end">$5.000,00</td>
                             </tr> --}}
                             <tr>
-                                <td colspan="4" class="font-weight-bold text-uppercase text-end">Pajak (10%)</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $pajak}}</td>
+                                <td colspan="4" class="font-weight-bold text-uppercase text-end">Pajak (2%)</td>
+                                <td class="font-weight-bold text-end">Rp. {{ $pajak }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="font-weight-bold text-uppercase text-end">Biaya Tambahan</td>
+                                <td class="font-weight-bold text-end">Rp. {{ $biaya_tambahan }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Diskon</td>
-                                <td class="font-weight-bold text-end">Rp. </td>
+                                <td class="font-weight-bold text-end">Rp. {{ $diskon }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $total + $pajak}}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ $total }}</td>
                             </tr>
                         </table>
                         <p class="text-secondary text-center mt-5">Thank you very much for trusting our laundry service. We
@@ -117,8 +121,8 @@
         </div>
 
         <div class="container-xl d-flex justify-content-between">
-            <a href="/transaksi" class="btn btn-primary">Kembali ke halaman transaksi</a>
-            <button type="button" class="btn btn-primary" onclick="printSection()">
+            <a href="/transaksi" class="btn bg-secondary-lt">Kembali ke halaman transaksi</a>
+            <button type="button" class="btn bg-success-lt" onclick="printSection()">
                 <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24"
                     stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -136,7 +140,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah</h5>
+                        <h5 class="modal-title">Tambah Paket yang Dibeli</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -144,31 +148,35 @@
                         <form action="{{ route('detail', ['id' => $idtransaksi]) }}" method="POST">
                             @csrf
                             <input type="hidden" id="id" name="id_transaksi" value="{{ $idtransaksi }}">
+
                             <div class="mb-3">
-                                <div class="form-label">Nama Paket</div>
-                                <select class="form-select" name="id_paket">
-                                    @foreach ($paket as $o)
-                                        <option value="{{ $o->id }}">{{ $o->nama_paket }}</option>
-                                    @endforeach
-                                </select>
+                                <label class="form-label">Paket yang dibeli</label>
+                                <div id="paket-container">
+                                    <div class="input-group mb-2 paket-item">
+                                        <select class="form-select" name="id_paket[]">
+                                            @foreach ($paket as $o)
+                                                <option value="{{ $o->id }}">{{ $o->nama_paket }}</option>
+                                            @endforeach
+                                        </select>
+                                        <input type="number" class="form-control" name="qty[]" placeholder="Quantity"
+                                            autocomplete="off" required>
+                                        <button type="button" class="btn btn-danger remove-paket">X</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary mt-2" id="add-paket">Tambah</button>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" class="form-control" name="qty" placeholder="Quantity">
-                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Keterangan</label>
                                 <input type="text" class="form-control" name="keterangan" placeholder="Keterangan">
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary  btn-3" data-bs-dismiss="modal">
-                                    Cancel
-                                </button>
-                                <button type="submit" class="btn btn-primary btn-5 ms-auto" data-bs-dismiss="modal">
-                                    Tambah Data
-                                </button>
+
+                            <div class="modal-footer d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Tambah Data</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -203,5 +211,31 @@
                 window.print();
                 document.body.innerHTML = originalContents;
             }
+        </script>
+
+        <script>
+            document.getElementById('add-paket').addEventListener('click', function() {
+                let paketContainer = document.getElementById('paket-container');
+                let paketItem = document.createElement('div');
+                paketItem.classList.add('input-group', 'mb-2', 'paket-item');
+
+                paketItem.innerHTML = `
+            <select class="form-select" name="id_paket[]" required>
+                @foreach ($paket as $o)
+                    <option value="{{ $o->id }}">{{ $o->nama_paket }}</option>
+                @endforeach
+            </select>
+            <input type="number" class="form-control" name="qty[]" placeholder="Quantity" autocomplete="off" required>
+            <button type="button" class="btn btn-danger btn-sm remove-paket">X</button>
+        `;
+
+                paketContainer.appendChild(paketItem);
+            });
+
+            document.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-paket')) {
+                    event.target.closest('.paket-item').remove();
+                }
+            });
         </script>
     @endsection
