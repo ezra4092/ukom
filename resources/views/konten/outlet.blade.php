@@ -222,8 +222,7 @@
             </div>
         </div>
     </div>
-    </div>
-
+    
     <script src="/dist/js/jquery.min.js"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script> --}}
     {{-- <script src="/dist/js/jquery.js" defer></script> --}}

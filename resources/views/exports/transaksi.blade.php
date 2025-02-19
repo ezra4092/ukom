@@ -5,46 +5,46 @@
         </tr>
         <tr>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color: rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:aqua">
                 No</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Nama Outlet</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Kode Invoice</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Nama Member</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Tanggal Transaksi</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Batas Waktu</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Tanggal Bayar</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Biaya Tambahan</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Diskon</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Pajak</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Total</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Status</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Pembayaran</th>
             <th
-                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  rgb(0, 187, 255);">
+                style="font-family: calibri; font-size: 12px; text-align: center; border: 1px solid black; background-color:  aqua;">
                 Nama Petugas</th>
         </tr>
     </thead>

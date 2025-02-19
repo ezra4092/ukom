@@ -283,6 +283,6 @@
                 alert.classList.add('fade');
                 setTimeout(() => alert.remove(), 500); // Hapus elemen setelah efek fade
             }
-        }, 2000); // 3 detik
+        }, 3000); // 3 detik
     </script>
 @endsection

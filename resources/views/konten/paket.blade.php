@@ -1,5 +1,4 @@
 @extends('template.main')
-
 @section('konten')
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -27,20 +26,6 @@
                                     Tambah Data
                                 </a>
                             @endif
-                            {{-- <a href="" class="btn bg-success-lt">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-file-spreadsheet">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                    <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                                    <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-                                    <path d="M8 11h8v7h-8z" />
-                                    <path d="M8 15h8" />
-                                    <path d="M11 11v7" />
-                                </svg>
-                                Generate Laporan
-                            </a> --}}
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -78,7 +63,6 @@
                                         </td>
                                         <td>{{ $paket->nama_paket }}</td>
                                         <td>Rp. {{ number_format($paket->harga, 0, ',', '.') }}</td>
-                                        {{-- <td>Rp. {{ $paket->harga }}</td> --}}
                                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
                                             <td>
                                                 <button type="button" id="edit" data-bs-toggle="modal"
@@ -127,6 +111,118 @@
             </div>
         </div>
     </div>
+
+    {{-- <div class="page-header d-print-none">
+        <div class="container-xl">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Table User</h3>
+                        <div class="p-2 g-col-6 ms-auto">
+                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                <a href="#" class="btn bg-primary-lt me-2" data-bs-toggle="modal"
+                                    data-bs-target="#tambahModal">
+                                    <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
+                                        <path d="M12 5l0 14" />
+                                        <path d="M5 12l14 0" />
+                                    </svg>
+                                    Tambah Data
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Outlet</th>
+                                    <th>Jenis</th>
+                                    <th>Nama Paket</th>
+                                    <th>Harga</th>
+                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                        <th>Aksi</th>
+                                    @endif
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+                                @foreach ($data as $paket)
+                                    <tr>
+                                        <td width="5%">{{ $no++ }}</td>
+                                        <td>{{ $paket->outlet->nama }}</td>
+                                        <td>
+                                            @if ($paket->jenis = 'kiloan')
+                                                Kiloan
+                                            @elseif ($paket->jenis = 'selimut')
+                                                Selimut
+                                            @elseif ($paket->jenis = 'bed_cover')
+                                                Bed Cover
+                                            @elseif ($paket->jenis = 'kaos')
+                                                Kaos
+                                            @elseif ($paket->jenis = 'lain')
+                                                Lain-lain
+                                            @endif
+                                        </td>
+                                        <td>{{ $paket->nama_paket }}</td>
+                                        <td>Rp. {{ number_format($paket->harga, 0, ',', '.') }}</td>
+                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                            <td>
+                                                <button type="button" id="edit" data-bs-toggle="modal"
+                                                    class="bg-warning" data-bs-target="#editModal"
+                                                    data-id="{{ $paket->id }}" data-nama="{{ $paket->outlet->nama }}"
+                                                    data-jenis="{{ $paket->jenis }}"
+                                                    data-nama_paket="{{ $paket->nama_paket }}"
+                                                    data-harga="{{ $paket->harga }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-edit text-light">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path
+                                                            d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                        <path
+                                                            d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                        <path d="M16 5l3 3" />
+                                                    </svg>
+                                                </button>
+                                                <button type="button" id="hapus" data-bs-toggle="modal"
+                                                    class="bg-danger" data-bs-target="#hapusModal"
+                                                    data-id="{{ $paket->id }}" data-nama="{{ $paket->outlet->nama }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="icon icon-tabler icons-tabler-outline icon-tabler-trash text-light">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M4 7l16 0" />
+                                                        <path d="M10 11l0 6" />
+                                                        <path d="M14 11l0 6" />
+                                                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex align-items-center">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
 
     {{-- modal tambah --}}
     <div class="modal modal-blur fade" id="tambahModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -276,6 +372,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <script src="/dist/js/jquery.min.js"></script>
     <script>

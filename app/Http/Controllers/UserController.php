@@ -30,7 +30,7 @@ class UserController extends Controller
         $user->id_outlet = $request->id_outlet;
         $user->save();
 
-        return redirect()->route('user');
+        return redirect()->route('user')->with('success', 'Data user berhasil ditambahkan.');
     }
 
     public function hapus_user(Request $request){
@@ -44,14 +44,14 @@ class UserController extends Controller
         if (($detailIds)) {
             Detail_Transaksi::whereIn('id_transaksi', $detailIds)->delete();
         }
-        Transaksi::whereIn('id_user', $id)->delete();
+        Transaksi::where('id_user', $id)->delete();
 
         $user = User::find($id);
         if ($user) {
             $user->delete();
         }
 
-        return redirect()->route('user');
+        return redirect()->route('user')->with('success', 'User dan data transaksi terkait berhasil dihapus.');
     }
 
     public function edit_user(Request $request){
@@ -71,6 +71,6 @@ class UserController extends Controller
             $edit->id_outlet = $request->id_outlet;
             $edit->save();
         }
-        return redirect()->route('user');
+        return redirect()->route('user')->with('success', 'Data outlet berhasil diedit.');
     }
 }
