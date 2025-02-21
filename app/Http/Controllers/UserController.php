@@ -8,6 +8,7 @@ use App\Models\Outlet;
 use App\Models\Transaksi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -21,7 +22,25 @@ class UserController extends Controller
     }
 
     public function tambah_user(Request $request){
+        // $request->validate(['password' => 'required|min:4',]);
+        // $user = New User();
+        // $user->nama = $request->nama;
+        // $user->username = $request->username;
+        // $user->password = Hash::make($request->password);
+        // $user->role = $request->role;
+        // $user->id_outlet = $request->id_outlet;
+        // $user->save();
+
+        // return redirect()->route('user')->with('success', 'Data user berhasil ditambahkan.');
+
         $request->validate(['password' => 'required|min:4',]);
+
+        $existingMember = User::where('username', $request->username)
+            ->first();
+
+        if ($existingMember) {
+            return redirect()->back()->with('error', 'User sudah terdaftar.');
+        }
         $user = New User();
         $user->nama = $request->nama;
         $user->username = $request->username;
@@ -30,7 +49,7 @@ class UserController extends Controller
         $user->id_outlet = $request->id_outlet;
         $user->save();
 
-        return redirect()->route('user')->with('success', 'Data user berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'User berhasil ditambahkan.');
     }
 
     public function hapus_user(Request $request){

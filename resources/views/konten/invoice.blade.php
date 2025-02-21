@@ -84,8 +84,8 @@
                                     <td class="text-center">
                                         {{ $invoice->qty }}
                                     </td>
-                                    <td class="text-end">Rp. {{ $invoice->paket->harga }}</td>
-                                    <td class="text-end">Rp. {{ $invoice->qty * $invoice->paket->harga }}</td>
+                                    <td class="text-end">Rp. {{ number_format($invoice->paket->harga, 0, ',', '.') }}</td>
+                                    <td class="text-end">Rp. {{ number_format($invoice->qty * $invoice->paket->harga, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
                             {{-- <tr>
@@ -98,19 +98,19 @@
                             </tr> --}}
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Pajak (2%)</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $pajak }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ number_format($pajak, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Biaya Tambahan</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $biaya_tambahan }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ number_format($biaya_tambahan, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Diskon</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $diskon }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ number_format($diskon, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Total Due</td>
-                                <td class="font-weight-bold text-end">Rp. {{ $total }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ number_format($total, 0, ',', '.') }}</td>
                             </tr>
                         </table>
                         <p class="text-secondary text-center mt-5">Thank you very much for trusting our laundry service. We

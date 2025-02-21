@@ -7,7 +7,12 @@
                     {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+                @elseif (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
@@ -222,7 +227,7 @@
             </div>
         </div>
     </div>
-    
+
     <script src="/dist/js/jquery.min.js"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script> --}}
     {{-- <script src="/dist/js/jquery.js" defer></script> --}}

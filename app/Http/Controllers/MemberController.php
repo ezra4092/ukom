@@ -33,10 +33,10 @@ class MemberController extends Controller
         $member->save();
 
         return redirect()->route('member')->with('success', 'Data member berhasil ditambahkan.');
-
     }
 
-    public function hapus_member(Request $request){
+    public function hapus_member(Request $request)
+    {
         // dd($request->all());
         $id = $request->id;
         $detailIds = Transaksi::where('id_member', $id)->pluck('id')->toArray();
@@ -65,6 +65,5 @@ class MemberController extends Controller
         $hapus->save();
 
         return redirect()->route('member')->with('success', 'Data member berhasil diedit.');
-
     }
 }

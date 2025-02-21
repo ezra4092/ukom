@@ -24,6 +24,11 @@ class OutletController extends Controller
     public function tambah_outlet(Request $request)
     {
         // dd($request->all());
+
+        $cekoutlet = Outlet::where('nama', $request->nama)->get();
+        if($cekoutlet) {
+            return redirect()->back()->with('error', 'Outlet sudah terdaftar.');
+        }
         $outlet = new Outlet();
         $outlet->nama = $request->nama;
         $outlet->alamat = $request->alamat;

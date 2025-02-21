@@ -162,9 +162,12 @@
                                             <td>{{ \Carbon\Carbon::parse($item->tgl)->format('d-m-Y') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($item->batas_waktu)->format('d-m-Y') }}</td>
                                             <td>
-                                                <span
-                                                    class="badge {{ $item->dibayar == 'dibayar' ? 'bg-success-lt' : 'bg-danger-lt' }}"
-                                                    style="border-radius:15px">{{ ucfirst($item->dibayar) }}</span>
+                                                @if ($item->dibayar == 'dibayar')
+                                                <div class="badge bg-success-lt" style="border-radius:15px">Dibayar</div>
+                                            @elseif ($item->dibayar == 'belum_dibayar')
+                                                <div class="badge bg-danger-lt" style="border-radius:15px">Belum Dibayar
+                                                </div>
+                                            @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -174,8 +177,13 @@
                     </div>
                     @if (Auth::user()->role == 'admin' || Auth::user()->role == 'owner')
                         <div class="col-12 col-sm-4 col-lg-4">
-                            <div class="card card-sm mt-3">
-                                <canvas id="myChart"></canvas>
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <span class="badge bg-primary-lt">Grafik Transaksi</span>
+                                </div>
+                                <div class="card card-sm">
+                                    <canvas id="myChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     @endif

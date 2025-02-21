@@ -13,7 +13,7 @@
                     <div class="card-header">
                         <h3 class="card-title">Table Paket</h3>
                         <div class="p-2 g-col-6  ms-auto">
-                            @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                            @if (Auth::user()->role == 'admin')
                                 <a href="#" class="btn bg-primary-lt me-2" data-bs-toggle="modal"
                                     data-bs-target="#tambahModal">
                                     <!-- Download SVG icon from http://tabler.io/icons/icon/plus -->
@@ -37,7 +37,7 @@
                                     <th>Jenis</th>
                                     <th>Nama Paket</th>
                                     <th>Harga</th>
-                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                    @if (Auth::user()->role == 'admin')
                                         <th>Aksi</th>
                                     @endif
                                 </tr>
@@ -49,21 +49,21 @@
                                         <td width="5%">{{ $no++ }}</td>
                                         <td>{{ $paket->outlet->nama }}</td>
                                         <td>
-                                            @if ($paket->jenis = 'kiloan')
+                                            @if ($paket->jenis == 'kiloan')
                                                 Kiloan
-                                            @elseif ($paket->jenis = 'selimut')
+                                            @elseif ($paket->jenis == 'selimut')
                                                 Selimut
-                                            @elseif ($paket->jenis = 'bed_cover')
+                                            @elseif ($paket->jenis == 'bed_cover')
                                                 Bed Cover
-                                            @elseif ($paket->jenis = 'kaos')
+                                            @elseif ($paket->jenis == 'kaos')
                                                 Kaos
-                                            @elseif ($paket->jenis = 'lain')
+                                            @elseif ($paket->jenis == 'lain')
                                                 Lain-lain
                                             @endif
                                         </td>
                                         <td>{{ $paket->nama_paket }}</td>
                                         <td>Rp. {{ number_format($paket->harga, 0, ',', '.') }}</td>
-                                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'kasir')
+                                        @if (Auth::user()->role == 'admin')
                                             <td>
                                                 <button type="button" id="edit" data-bs-toggle="modal"
                                                     class="bg-warning" data-bs-target="#editModal"

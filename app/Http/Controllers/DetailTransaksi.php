@@ -43,6 +43,7 @@ class DetailTransaksi extends Controller
     {
         // dd($id);
         // $detail = Transaksi::with(['user', 'outlet', 'member'])->find($id);
+        $id_outlet = auth()->user()->id_outlet;
         $detail = Transaksi::find($id);
         $idtransaksi = $detail->id;
         $detailTransaksi = Detail_Transaksi::where('tb_detail_transaksi.id_transaksi', $id)->get();
@@ -69,7 +70,7 @@ class DetailTransaksi extends Controller
             'tlp' => $detail,
             'alamat' => $detail,
             'kode' => $detail,
-            'paket' => Paket::all(),
+            'paket' => Paket::where('id_outlet', $id_outlet)->get(),
             'idtransaksi' => $idtransaksi,
             'total' => $totaldue,
             'pajak' => $pajak,

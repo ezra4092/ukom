@@ -196,7 +196,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label class="form-label">Tanggal</label>
+                                <label class="form-label">Tanggal <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control" name="tgl" placeholder="Tanggal"
                                     required>
                             </div>
@@ -221,7 +221,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <div class="form-label">Status</div>
+                                <div class="form-label">Status <span class="text-danger">*</span></div>
                                 <select class="form-select" name="status" required>
                                     <option value="baru">Baru</option>
                                     <option value="proses">Proses</option>
@@ -230,7 +230,7 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <div class="form-label">Pembayaran</div>
+                                <div class="form-label">Pembayaran <span class="text-danger">*</span></div>
                                 <select class="form-select" name="dibayar" required>
                                     <option value="belum_dibayar">Belum Dibayar</option>
                                     <option value="dibayar">Dibayar</option>
@@ -238,7 +238,7 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Paket yang dibeli</label>
+                            <label class="form-label">Paket yang dibeli <span class="text-danger">*</span></label>
                             <div id="paket-container">
                                 <div class="input-group mb-2 paket-item">
                                     <select class="form-select" name="id_paket[]" required>

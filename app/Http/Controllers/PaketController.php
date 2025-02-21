@@ -13,10 +13,9 @@ class PaketController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $id = auth()->user()->id_outlet;
         return view('konten.paket', [
-            'data' => Paket::all(),
-            'outlet' => Outlet::where('id', $user->id_outlet)->value('nama'),
+            'data' => Paket::where('id_outlet', $id )->get(),
             'title' => 'Paket - UKOM'
         ]);
     }

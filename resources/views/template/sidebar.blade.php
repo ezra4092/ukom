@@ -26,6 +26,26 @@
                         </span>
                     </a>
                 </li>
+                @if (Auth::user()->role == 'kasir')
+                    <li class="nav-item">
+                        <a class="nav-link" href="/paket">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                    <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5" />
+                                    <path d="M12 12l8 -4.5" />
+                                    <path d="M12 12l0 9" />
+                                    <path d="M12 12l-8 -4.5" />
+                                    <path d="M16 5.25l-8 4.5" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                                Paket
+                            </span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="/member">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
