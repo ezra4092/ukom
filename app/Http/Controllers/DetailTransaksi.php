@@ -64,12 +64,7 @@ class DetailTransaksi extends Controller
         $data = [
             'data' => Detail_Transaksi::where('id_transaksi', $idtransaksi)->get(),
             'title' => 'Detail Transaksi - UKOM',
-            'nama' => $detail,
-            'outlet' => $detail,
-            'namacust' => $detail,
-            'tlp' => $detail,
-            'alamat' => $detail,
-            'kode' => $detail,
+            'pelanggan' => $detail,
             'paket' => Paket::where('id_outlet', $id_outlet)->get(),
             'idtransaksi' => $idtransaksi,
             'total' => $totaldue,

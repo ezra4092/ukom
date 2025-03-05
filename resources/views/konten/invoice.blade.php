@@ -44,26 +44,24 @@
             <div class="container-xl">
                 <div class="card card-lg">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <p class="h3">BersihSekejab</p>
-                                <address>
-                                    Petugas : {{ $nama->user->nama }}<br>
-                                    Outlet : {{ $outlet->outlet->nama }}<br>
-                                </address>
-                            </div>
-                            <div class="col-6 text-end">
-                                <p class="h3">{{ $namacust->member->nama }}</p>
-                                <address>
-                                    {{ $tlp->member->tlp }}<br>
-                                    {{ $alamat->member->alamat }}<br>
-                                </address>
-                            </div>
-                            <div class="col-12 my-5 d-flex justify-align-reverse">
-                                <h1>Kode : {{ $kode->kode_invoice }}</h1>
-
-                            </div>
-                        </div>
+                        <p class="h2 text-center">{{ $pelanggan->kode_invoice }}</p>
+                        <table class="w-100 mb-4">
+                            <tr>
+                                <td>
+                                    <strong>{{ $pelanggan->member->nama }}</strong><br>
+                                    {{ $pelanggan->member->alamat }}
+                                </td>
+                                <td class="text-end">
+                                    <strong>Tanggal:</strong> {{ \Carbon\Carbon::parse($pelanggan->tgl)->format('d-m-Y') }}<br>
+                                    <strong>Status:</strong>
+                                    @if ($pelanggan->dibayar == 'dibayar')
+                                        <span class="text-success">Dibayar</span>
+                                    @elseif ($pelanggan->dibayar == 'belum_dibayar')
+                                        <span class="text-danger">Belum Dibayar</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
                         <table class="table table-transparent table-responsive">
                             <thead>
                                 <tr>
@@ -85,24 +83,18 @@
                                         {{ $invoice->qty }}
                                     </td>
                                     <td class="text-end">Rp. {{ number_format($invoice->paket->harga, 0, ',', '.') }}</td>
-                                    <td class="text-end">Rp. {{ number_format($invoice->qty * $invoice->paket->harga, 0, ',', '.') }}</td>
+                                    <td class="text-end">Rp.
+                                        {{ number_format($invoice->qty * $invoice->paket->harga, 0, ',', '.') }}</td>
                                 </tr>
                             @endforeach
-                            {{-- <tr>
-                                <td colspan="4" class="strong text-end">Vat Rate</td>
-                                <td class="text-end">20%</td>
-                            </tr> --}}
-                            {{-- <tr>
-                                <td colspan="4" class="strong text-end">Vat Due</td>
-                                <td class="text-end">$5.000,00</td>
-                            </tr> --}}
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Pajak (2%)</td>
                                 <td class="font-weight-bold text-end">Rp. {{ number_format($pajak, 0, ',', '.') }}</td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Biaya Tambahan</td>
-                                <td class="font-weight-bold text-end">Rp. {{ number_format($biaya_tambahan, 0, ',', '.') }}</td>
+                                <td class="font-weight-bold text-end">Rp. {{ number_format($biaya_tambahan, 0, ',', '.') }}
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="4" class="font-weight-bold text-uppercase text-end">Diskon</td>
@@ -203,14 +195,24 @@
                 $('#idhapus').val(id)
             });
 
-            function printSection() {
-                var printContents = document.querySelector('.page-body').outerHTML;
-                var originalContents = document.body.innerHTML;
+            // function printSection() {
+            //     var printContents = document.querySelector('.page-body').outerHTML;
+            //     var originalContents = document.body.innerHTML;
 
-                document.body.innerHTML = printContents;
-                window.print();
-                document.body.innerHTML = originalContents;
-            }
+            //     document.body.innerHTML = printContents;
+            //     window.print();
+            //     document.body.innerHTML = originalContents;
+            // }
+
+            function printSection() {
+        var printContents = document.querySelector('.page-body').innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+        location.reload(); // Reload untuk mengembalikan tampilan asli
+    }
         </script>
 
         <script>

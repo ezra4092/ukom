@@ -27,8 +27,10 @@ class TransaksiController extends Controller
             ->transform(function ($item) {
                 $item->tgl = explode(" ", $item->tgl)[0];
                 $item->batas_waktu = explode(" ", $item->batas_waktu)[0];
+                $item->tgl_bayar = explode(" ", $item->tgl_bayar)[0];
                 return $item;
             });
+        $tgl = Carbon::now();
         return view('konten.transaksi', [
             'data' => $transaksi,
             'outlet' => Outlet::where('id', $user->id_outlet)->value('nama'),
@@ -36,6 +38,8 @@ class TransaksiController extends Controller
             'petugas' => User::where('id', $user)->value('nama'),
             'title' => 'Transaksi - UKOM',
             'paket' => Paket::all(),
+            'tanggal' => $tgl->format('Y-m-d'),
+            'tgl_bayar' => optional($transaksi->first())->tgl_bayar
 
         ]);
     }
@@ -49,12 +53,14 @@ class TransaksiController extends Controller
         $transaksi->id_member = $request->id_member;
         $transaksi->tgl = $request->tgl;
         $transaksi->batas_waktu =  Carbon::parse($request->tgl)->addDays(3);
-        $transaksi->tgl_bayar = $request->tgl_bayar;
+        // $transaksi->tgl_bayar = $request->tgl_bayar;
         $transaksi->biaya_tambahan = $request->biaya_tambahan;
         $transaksi->diskon = $request->diskon;
         $transaksi->pajak = $request->pajak;
         $transaksi->status = $request->status;
-        $transaksi->dibayar = $request->dibayar;
+        if ($request->tgl_bayar == null) {
+            $transaksi->dibayar = 'belum_dibayar';
+        }
         $transaksi->id_user = $request->id_user;
         $transaksi->save();
 
@@ -95,26 +101,55 @@ class TransaksiController extends Controller
         $hapustransaksi = Transaksi::where('id', $transaksi)->first();
         $hapustransaksi->delete();
 
-        return redirect()->route('transaksi');
+        return redirect()->route('transaksi')->with('success', 'Data transaksi berhasil dihapus');
     }
+
+    // public function edit_transaksi(Request $request)
+    // {
+    //     // dd($request->all());
+    //     $transaksi = Transaksi::where('id', $request->id)->first();
+    //     $transaksi->tgl = $request->tgl;
+    //     $transaksi->batas_waktu =  $request->batas_waktu;
+    //     $transaksi->tgl_bayar = $request->tgl_bayar;
+    //     if($request->tgl_bayar != null){
+    //         $transaksi->dibayar = 'dibayar';
+
+    //     }
+    //     $transaksi->biaya_tambahan = $request->biaya_tambahan;
+    //     $transaksi->diskon = $request->diskon;
+    //     $transaksi->pajak = $request->pajak;
+    //     $transaksi->status = $request->status;
+    //     $transaksi->diskon = $request->diskon;
+    //     $transaksi->save();
+
+    //     return redirect()->route('transaksi')->with('success', 'Data transaksi berhasil diperbarui');
+    // }
 
     public function edit_transaksi(Request $request)
-    {
-        // dd($request->all());
-        $transaksi = Transaksi::where('id', $request->id)->first();
-        $transaksi->tgl = $request->tgl;
-        $transaksi->batas_waktu =  $request->batas_waktu;
-        $transaksi->tgl_bayar = $request->tgl_bayar;
-        $transaksi->biaya_tambahan = $request->biaya_tambahan;
-        $transaksi->diskon = $request->diskon;
-        $transaksi->pajak = $request->pajak;
-        $transaksi->status = $request->status;
-        $transaksi->diskon = $request->diskon;
-        $transaksi->dibayar = $request->dibayar;
-        $transaksi->save();
+{
+    $transaksi = Transaksi::where('id', $request->id)->first();
 
-        return redirect()->route('transaksi');
+    $transaksi->tgl = $request->tgl;
+    $transaksi->batas_waktu = $request->batas_waktu;
+    // Hanya isi tgl_bayar jika sebelumnya NULL (tidak bisa diubah setelah diinput pertama kali)
+    if ($transaksi->tgl_bayar == null) {
+        $transaksi->tgl_bayar = $request->tgl_bayar;
+        if ($request->tgl_bayar != null) {
+            $transaksi->dibayar = 'dibayar';
+        }
     }
+
+    $transaksi->biaya_tambahan = $request->biaya_tambahan;
+    $transaksi->diskon = $request->diskon;
+    $transaksi->pajak = $request->pajak;
+    $transaksi->status = $request->status;
+
+    $transaksi->save();
+
+    return redirect()->route('transaksi');
+}
+
+
 
     public function export()
     {

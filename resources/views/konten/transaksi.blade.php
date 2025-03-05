@@ -74,7 +74,11 @@
                                         <td>{{ $transaksi->member->nama }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->tgl)->format('d-m-Y') }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaksi->batas_waktu)->format('d-m-Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($transaksi->tgl_bayar)->format('d-m-Y') }}</td>
+                                        @if ($transaksi->tgl_bayar != null)
+                                            <td>{{ \Carbon\Carbon::parse($transaksi->tgl_bayar)->format('d-m-Y') }}</td>
+                                        @elseif ($transaksi->tgl_bayar == null)
+                                            <td>{{ $transaksi->tgl_bayar }}</td>
+                                        @endif
                                         <td>Rp. {{ number_format($transaksi->total, 0, ',', '.') }}</td>
                                         {{-- <td>{{ $transaksi->biaya_tambahan }}</td>
                                         <td>{{ $transaksi->diskon }}</td>
@@ -138,6 +142,7 @@
                                                         <path d="M16 5l3 3" />
                                                     </svg>
                                                 </button>
+                                                @if (Auth::user()->role == 'admin')
                                                 <button type="button" id="hapus" data-bs-toggle="modal"
                                                     class="bg-danger" data-bs-target="#hapusModal"
                                                     data-id="{{ $transaksi->id }}">
@@ -153,6 +158,7 @@
                                                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                                     </svg>
                                                 </button>
+                                                @endif
                                             </td>
                                         @endif
                                     </tr>
@@ -186,7 +192,7 @@
                                 <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}">
                             </div>
                             <div class="col">
-                                <div class="form-label">Member</div>
+                                <div class="form-label">Member <span class="text-danger">*</span></div>
                                 <select class="form-select" name="id_member" required>
                                     @foreach ($member as $m)
                                         <option value="{{ $m->id }}">{{ $m->nama }}</option>
@@ -196,13 +202,18 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label class="form-label">Tanggal <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" name="tgl" placeholder="Tanggal"
-                                    required>
+                                <div class="form-label">Status <span class="text-danger">*</span></div>
+                                <select class="form-select" name="status" required>
+                                    <option value="baru">Baru</option>
+                                    <option value="proses">Proses</option>
+                                    <option value="selesai">Selesai</option>
+                                    <option value="diambil">Diambil</option>
+                                </select>
                             </div>
                             <div class="col">
-                                <label class="form-label">Tanggal Bayar</label>
-                                <input type="date" class="form-control" name="tgl_bayar" placeholder="Tanggal Bayar">
+                                <label class="form-label">Tanggal <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" name="tgl" placeholder="Tanggal"
+                                    value="{{ $tanggal }}" required>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -219,7 +230,7 @@
                                 <input type="number" class="form-control" name="diskon" placeholder="Diskon">
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col">
                                 <div class="form-label">Status <span class="text-danger">*</span></div>
                                 <select class="form-select" name="status" required>
@@ -236,7 +247,7 @@
                                     <option value="dibayar">Dibayar</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <label class="form-label">Paket yang dibeli <span class="text-danger">*</span></label>
                             <div id="paket-container">
@@ -346,27 +357,8 @@
                                 <input type="date" class="form-control" name="batas_waktu" id="batas_waktue"
                                     placeholder="Tanggal" required>
                             </div>
-                            <div class="col">
-                                <label class="form-label">Tanggal Bayar</label>
-                                <input type="date" class="form-control" name="tgl_bayar" id="tgl_bayare"
-                                    placeholder="Tanggal Bayar">
-                            </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label class="form-label">Biaya Tambahan</label>
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text">Rp.</span>
-                                    <input type="text" class="form-control" name="biaya_tambahan" id="biayae"
-                                        placeholder="Biaya Tambahan">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label class="form-label">Diskon <span>(%)</span></label>
-                                <input type="number" class="form-control" name="diskon" id="diskone"
-                                    placeholder="Diskon">
-                            </div>
-                        </div>
+
                         <div class="row mb-3">
                             <div class="col">
                                 <div class="form-label">Status</div>
@@ -388,84 +380,27 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <div class="form-label">Pembayaran</div>
-                                <select class="form-select" name="dibayar" required>
-                                    <option value="dibayar"
-                                        {{ isset($transaksi) && $transaksi->dibayar == 'dibayar' ? 'selected' : '' }}>
-                                        Dibayar
-                                    </option>
-                                    <option value="belum_dibayar"
-                                        {{ isset($transaksi) && $transaksi->dibayar == 'belum_dibayar' ? 'selected' : '' }}>
-                                        Belum Dibayar</option>
-                                </select>
+                                <label class="form-label">Tanggal Bayar</label>
+                                <input type="date" class="form-control" name="tgl_bayar" id="tgl_bayare"
+                                    value="{{ $tgl_bayar ?? '' }}">
+                                <span class="text-danger h6">Tanggal bayar tidak bisa diganti ketika sudah di input</span>
                             </div>
                         </div>
-                        {{-- <div class="mb-3">
-                            <div class="form-label">Outlet</div>
-                            <input type="input" class="form-control" placeholder="Outlet"
-                                value="{{ Auth::user()->outlet->nama }}" readonly>
-                            <input type="hidden" name="id_outlet" value="{{ Auth::user()->id_outlet }}" disabled>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Biaya Tambahan</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text">Rp.</span>
+                                    <input type="text" class="form-control" name="biaya_tambahan" id="biayae"
+                                        placeholder="Biaya Tambahan">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Diskon <span>(%)</span></label>
+                                <input type="number" class="form-control" name="diskon" id="diskone"
+                                    placeholder="Diskon">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <div class="form-label">Member</div>
-                            <select class="form-select" name="id_member" id="membere">
-                                @foreach ($member as $m)
-                                    <option value="{{ $m->id }}" disabled>{{ $m->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        {{-- <div class="mb-3">
-                            <label class="form-label">Tanggal</label>
-                            <input type="date" class="form-control" name="tgl" id="tgle"
-                                placeholder="Tanggal" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Batas Waktu</label>
-                            <input type="date" class="form-control" name="batas_waktu" id="batas_waktue"
-                                placeholder="Tanggal" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal Bayar</label>
-                            <input type="date" class="form-control" name="tgl_bayar" id="tgl_bayare"
-                                placeholder="Tanggal Bayar">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Biaya Tambahan</label>
-                            <input type="number" class="form-control" name="biaya_tambahan" id="biayae"
-                                placeholder="Biaya Tambahan">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Diskon <span>(%)</span></label>
-                            <input type="number" class="form-control" name="diskon" id="diskone"
-                                placeholder="Diskon">
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Status</div>
-                            <select class="form-select" name="status" required>
-                                <option value="baru"
-                                    {{ isset($transaksi) && $transaksi->status == 'baru' ? 'selected' : '' }}>Baru</option>
-                                <option value="proses"
-                                    {{ isset($transaksi) && $transaksi->status == 'proses' ? 'selected' : '' }}>Proses
-                                </option>
-                                <option value="selesai"
-                                    {{ isset($transaksi) && $transaksi->status == 'selesai' ? 'selected' : '' }}>Selesai
-                                </option>
-                                <option value="diambil"
-                                    {{ isset($transaksi) && $transaksi->status == 'diambil' ? 'selected' : '' }}>Diambil
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-label">Pembayaran</div>
-                            <select class="form-select" name="dibayar" required>
-                                <option value="dibayar"
-                                    {{ isset($transaksi) && $transaksi->dibayar == 'dibayar' ? 'selected' : '' }}>Dibayar
-                                </option>
-                                <option value="belum_dibayar"
-                                    {{ isset($transaksi) && $transaksi->dibayar == 'belum_dibayar' ? 'selected' : '' }}>
-                                    Belum Dibayar</option>
-                            </select>
-                        </div> --}}
                         <div class="mb-3">
                             <div class="form-label">Petugas</div>
                             <input type="input" class="form-control" placeholder="Outlet"
@@ -515,6 +450,13 @@
             $('#pajake').val(pajak);
             $('#statuse').val(status);
             $('#dibayare').val(dibayar);
+
+            var tglBayarInput = $('#tgl_bayare');
+            if (!tgl_bayar || tgl_bayar.trim() === "") {
+                tglBayarInput.prop("disabled", false);
+            } else {
+                tglBayarInput.prop("disabled", true);
+            }
         });
 
         $(document).on('click', '#hapus', function(e) {
@@ -548,7 +490,6 @@
             }
         });
     </script>
-
     <script>
         setTimeout(function() {
             let alert = document.querySelector('.alert');
